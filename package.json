@@ -1,0 +1,15 @@
+{
+  "name": "intelinvest",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Intelinvest: ações da B3, dólar e conteúdo educativo (PWA + Cloudflare Worker)",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node tests/pix.test.mjs && node tests/auth.test.mjs",
+    "test:api": "node tests/api.test.mjs",
+    "start": "node servidor.js"
+  },
+  "devDependencies": {
+    "jsqr": "1.4.0"
+  }
+}

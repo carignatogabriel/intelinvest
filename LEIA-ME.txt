@@ -1,0 +1,27 @@
+INTELINVEST — app de bolsa e dólar (PWA, instala no celular)
+
+LANÇAR:   abra PUBLICAR.txt (passo a passo completo, o que já está pronto e o que depende de você).
+
+TESTAR AGORA (celular e PC no mesmo Wi-Fi) — modo desenvolvimento
+  1. Dê dois cliques em iniciar.bat
+  2. No celular abra o endereço "No celular: http://192.168..." que aparece na janela.
+  (Porta padrão 8080; se estiver ocupada: cmd > set PORT=8765 && node servidor.js)
+  Este modo chama as APIs públicas direto, só para testes. Produção usa o servidor da pasta api/.
+
+PASTAS E ARQUIVOS
+  index.html, app.js, analise.js, styles.css  o app
+  termos.html, privacidade.html               textos legais (preencher os [PREENCHER])
+  api/worker.js                               servidor de dados com cache (Cloudflare Worker)
+  api/dev-server.mjs                          roda o servidor de dados localmente
+  publicar.ps1                                monta e publica site + servidor no Cloudflare
+  loja/                                       capturas, imagem de destaque e textos das lojas
+  config.js                                   API_BASE / API_FULL (o publicar.ps1 gera o de produção)
+
+FONTES DE DADOS
+  Lista, histórico e cotações: brapi.dev (B3).   Selic e IPCA: Banco Central (SGS).
+  Dólar/euro: PTAX do Banco Central (ou AwesomeAPI, se houver chave).
+  Os dados podem ter atraso de minutos.
+
+REGRAS DA LISTA
+  Exclui mercado fracionário (final F), recibos/direitos (final 55, 9x) e papéis sem negociação; mostra uma
+  classe por empresa (a mais líquida) — a busca mostra todas as classes.

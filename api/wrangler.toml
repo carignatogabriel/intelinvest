@@ -1,0 +1,19 @@
+name = "intelinvest-api"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+
+[vars]
+# Tickers por chamada permitidos pelo plano da brapi: "1" gratuito, "10" Startup, "20" Pro.
+BRAPI_PER_CALL = "1"
+# Depois de publicar o site, troque pelo endereço dele (ex.: "https://intelinvest.pages.dev") para só ele poder usar a API.
+ALLOW_ORIGIN = "*"
+# ID do cliente OAuth do Google (público; vazio = sem login). O publicar.ps1 preenche com -GoogleClientId.
+GOOGLE_CLIENT_ID = ""
+
+# >>> d1 (gerenciado pelo publicar.ps1: banco dos usuários do login)
+# <<< d1
+
+# Segredos NÃO ficam aqui. Cadastre (dentro da pasta api) com:
+#   npx wrangler secret put BRAPI_TOKEN     (token pago da brapi: libera todos os papéis e histórico)
+#   npx wrangler secret put AWESOME_KEY     (opcional: chave gratuita da AwesomeAPI; sem ela o dólar vem da PTAX do Banco Central)
+#   SESSION_SECRET (assina as sessões do login): o publicar.ps1 gera e cadastra sozinho na 1ª vez.

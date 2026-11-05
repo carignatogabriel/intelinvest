@@ -1,0 +1,14 @@
+# dependências e builds
+node_modules/
+dist/
+csp.txt
+# caches e estado local do Cloudflare Wrangler
+.wrangler/
+api/.wrangler/
+.dev.vars
+.env
+.env.*
+# logs e temporários
+*.log
+*.tmp
+Thumbs.db

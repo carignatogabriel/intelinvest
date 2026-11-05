@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Intelinvest</title>
+<meta name="description" content="Todas as ações da B3, dólar e gráficos num app grátis e instalável, com conteúdo educativo sobre como avaliar investimentos.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="__SITE_URL__/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Intelinvest">
+<meta property="og:title" content="Intelinvest — bolsa e dólar de relance">
+<meta property="og:description" content="Todas as ações da B3, dólar e gráficos num app grátis e instalável, com conteúdo educativo sobre como avaliar investimentos.">
+<meta property="og:url" content="__SITE_URL__/">
+<meta property="og:image" content="__SITE_URL__/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Intelinvest — bolsa e dólar de relance">
+<meta name="twitter:description" content="Todas as ações da B3, dólar e gráficos num app grátis e instalável, com conteúdo educativo sobre como avaliar investimentos.">
+<meta name="twitter:image" content="__SITE_URL__/og.png">
+<meta name="theme-color" content="#000000">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Intelinvest">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <div class="brand">
+      <h1>Intelinvest</h1>
+      <p class="status" id="status"><span class="dot" id="statusDot"></span><span id="statusText">Carregando…</span></p>
+    </div>
+    <div class="actions">
+      <button class="icon-btn" id="btnRefresh" aria-label="Atualizar agora">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="btnSettings" aria-label="Sobre e configurações">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main" data-view="mercado">
+    <div id="installBar" class="installbar" hidden>
+      <span id="installText">Instale o Intelinvest na tela inicial do celular.</span>
+      <button class="btn" id="installGo">Instalar</button>
+      <button class="installx" id="installX" aria-label="Dispensar">×</button>
+    </div>
+    <section id="hero" class="card hero skeleton-block v-mercado" aria-label="Dólar"></section>
+    <section id="movers" class="movers v-mercado" aria-label="Destaques do dia"></section>
+    <section id="breadth" class="breadth v-mercado" aria-label="Panorama do dia"></section>
+
+    <section class="filters v-mercado" aria-label="Filtros">
+      <div class="cats" id="cats" role="group" aria-label="Tipo de papel"></div>
+      <div class="search-row">
+        <input id="q" type="search" placeholder="Buscar ticker ou nome" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Buscar ticker ou empresa">
+        <select id="sector" aria-label="Filtrar por setor"><option value="">Todos os setores</option></select>
+      </div>
+    </section>
+
+    <nav class="tabs v-mercado" role="tablist" aria-label="Ordenar">
+      <button role="tab" aria-selected="true" data-tab="cap">Maiores</button>
+      <button role="tab" aria-selected="false" data-tab="up">Altas</button>
+      <button role="tab" aria-selected="false" data-tab="down">Quedas</button>
+      <button role="tab" aria-selected="false" data-tab="vol">Volume</button>
+    </nav>
+    <section id="list" class="list v-mercado" aria-label="Ações"></section>
+
+    <section id="viewAnalise" class="v-analise" aria-label="Análise" hidden></section>
+
+    <button class="support" id="btnSupport" hidden><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 21s-7-4.6-9.3-9A5.4 5.4 0 0 1 12 6a5.4 5.4 0 0 1 9.3 6c-2.3 4.4-9.3 9-9.3 9z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Apoiar o projeto</button>
+
+    <p class="foot">Dados: brapi.dev (B3), Banco Central (Selic/IPCA) e AwesomeAPI (câmbio). Podem ter atraso.<br>Conteúdo educativo — não é recomendação de investimento.<br><a href="termos.html">Termos de uso</a> · <a href="privacidade.html">Privacidade</a></p>
+  </main>
+</div>
+
+<nav class="bottomnav" aria-label="Seções">
+  <button data-view="mercado" aria-current="page">
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <span>Mercado</span>
+  </button>
+  <button data-view="analise">
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Análise</span>
+  </button>
+</nav>
+
+<div id="scrim" class="scrim" hidden></div>
+<aside id="sheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+  <div class="grab" id="grab"></div>
+  <div id="sheetBody"></div>
+</aside>
+
+<div id="settings" class="modal" role="dialog" aria-modal="true" aria-labelledby="setTitle" hidden>
+  <div class="modal-card">
+    <h2 id="setTitle">Sobre</h2>
+    <p class="hint" style="margin-top:0">Intelinvest — informações de mercado e conteúdo educativo. Não é recomendação de investimento. Dados com possível atraso.</p>
+    <div id="installBox" hidden style="margin-top:14px">
+      <button class="btn" id="btnInstall">Instalar o app</button>
+      <p class="hint" id="iosHint" hidden>No iPhone: toque em Compartilhar e depois em “Adicionar à Tela de Início”.</p>
+    </div>
+    <button class="btn ghost support-in" id="btnSupport2" hidden>Apoiar o projeto</button>
+    <div id="accountBox" hidden style="margin-top:16px">
+      <label>Conta</label>
+      <div id="accountOut">
+        <p class="hint" style="margin-top:0">Entrar é opcional. Usamos sua conta Google só para identificar você (nome, e-mail e foto). Veja a <a href="privacidade.html">Política de privacidade</a>.</p>
+        <div id="gsiBtn" class="gsi-wrap"></div>
+      </div>
+      <div id="accountIn" hidden>
+        <div class="acct"><img id="acctPic" alt="" width="40" height="40" referrerpolicy="no-referrer"><div><b id="acctName"></b><span id="acctMail"></span></div></div>
+        <div class="acct-actions"><button class="btn ghost" id="btnSignOut">Sair</button><button class="btn ghost danger" id="btnDelete">Excluir minha conta</button></div>
+      </div>
+    </div>
+    <div id="tokenBox" style="margin-top:16px">
+      <label for="token">Token da brapi (modo desenvolvimento)</label>
+      <input id="token" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="cole seu token gratuito">
+      <p class="hint">Sem token aparecem todas as ações, FIIs e BDRs da B3 com preço, variação e volume. O token gratuito de <b>brapi.dev</b> libera o histórico de 1M a 1A, mini-gráficos das 30 maiores, o Ibovespa e a aba Análise com as 40 maiores.</p>
+    </div>
+    <p class="hint"><a href="termos.html">Termos de uso</a> · <a href="privacidade.html">Política de privacidade</a></p>
+    <div class="modal-actions">
+      <button class="btn ghost" id="setCancel">Fechar</button>
+      <button class="btn" id="setSave">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div id="donate" class="modal" role="dialog" aria-modal="true" aria-labelledby="donTitle" hidden>
+  <div class="modal-card donate-card">
+    <h2 id="donTitle">Apoie o Intelinvest</h2>
+    <p class="hint" style="margin-top:0">O app é gratuito. Se ele ajuda você, pode contribuir com qualquer valor. A doação é voluntária, sem contrapartida, e não dá acesso a nada.</p>
+    <div class="amounts" id="donAmounts" role="group" aria-label="Valor da doação"></div>
+    <div id="donCustom" hidden>
+      <label for="donValue">Outro valor (R$)</label>
+      <input id="donValue" type="text" inputmode="decimal" autocomplete="off" placeholder="Ex.: 15,00">
+      <p class="hint err" id="donErr" hidden>Informe um valor entre R$ 1,00 e R$ 9.999,99.</p>
+    </div>
+    <div class="qr-wrap" id="donQr"></div>
+    <p class="qr-caption" id="donWho"></p>
+    <button class="btn wide" id="donCopy">Copiar código Pix</button>
+    <textarea id="donCode" readonly rows="3" aria-label="Código Pix copia e cola" spellcheck="false"></textarea>
+    <a class="btn ghost wide" id="donCard" hidden target="_blank" rel="noopener noreferrer">Cartão ou outro meio</a>
+    <p class="hint">No app do seu banco, escolha Pix → Pix Copia e Cola (ou leia o QR Code com outro aparelho). Confira o nome do favorecido antes de confirmar. Doação não é investimento e não gera retorno financeiro.</p>
+    <div class="modal-actions"><button class="btn ghost" id="donClose">Fechar</button></div>
+  </div>
+</div>
+
+<div id="welcome" class="modal" role="dialog" aria-modal="true" aria-labelledby="welTitle" hidden>
+  <div class="modal-card">
+    <h2 id="welTitle">Antes de começar</h2>
+    <p class="hint" style="margin-top:0">O <b>Intelinvest</b> reúne cotações da B3, dólar e conteúdo educativo sobre como avaliar investimentos.</p>
+    <ul class="welcome-list">
+      <li>Não é recomendação de compra, venda ou manutenção de ativos, nem consultoria ou análise de valores mobiliários.</li>
+      <li>Os dados podem ter atraso e erros. Confirme na sua corretora antes de decidir.</li>
+      <li>Investir envolve risco de perda. Rentabilidade passada não garante resultado futuro.</li>
+    </ul>
+    <p class="hint">Ao continuar, você declara ter lido os <a href="termos.html">Termos de uso</a> e a <a href="privacidade.html">Política de privacidade</a>.</p>
+    <div class="modal-actions"><button class="btn" id="welcomeOk">Li e aceito</button></div>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" hidden></div>
+
+<script src="config.js"></script>
+<script src="vendor/qrcode.js"></script>
+<script src="pix.js"></script>
+<script src="app.js"></script>
+<script src="analise.js"></script>
+<script src="auth.js"></script>
+<script src="donate.js"></script>
+</body>
+</html>

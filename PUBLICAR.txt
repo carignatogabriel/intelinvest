@@ -1,0 +1,101 @@
+INTELINVEST — COMO LANÇAR (ordem recomendada)
+
+═══ O QUE JÁ ESTÁ PRONTO (testado) ═══
+• App instalável (PWA): lista completa da B3, dólar, gráficos, aba Análise, aceite de termos, botão "Instalar".
+• Servidor de dados com cache (pasta api/): token fica no servidor, agrupa chamadas, repete em caso de limite.
+• Páginas de Termos de uso e Privacidade (modelos — ver pendências abaixo).
+• Pacote de publicação: publicar.ps1 (monta o site, aplica política de segurança, publica no Cloudflare).
+• Material das lojas na pasta loja/: 6 capturas 1080x1920, imagem de destaque 1024x500, textos prontos.
+• Testado no Cloudflare real (conta temporária): navegador não acusou erro de instalabilidade (https, manifesto,
+  service worker e cache offline ok), política de segurança sem bloqueios, 11 cartões de Análise, câmbio PTAX.
+
+═══ O QUE SÓ VOCÊ PODE FAZER ═══
+1) LOGIN NO CLOUDFLARE (grátis) — 2 minutos
+     npx wrangler login            (abre o navegador; autorize)
+     powershell -ExecutionPolicy Bypass -File .\publicar.ps1
+   Imprime o link do site. Abra no celular, teste e instale.
+
+2) DADOS (decisão sua; custa dinheiro)
+   • Sem token pago o app mostra a lista e o dólar, mas histórico, gráfico do dia e Análise só funcionam para
+     PETR4, VALE3, ITUB4 e MGLU3.
+   • Para liberar tudo: contratar plano pago da brapi.dev (Startup, ~R$ 120/mês; confirme no site) e rodar:
+       cd api
+       npx wrangler secret put BRAPI_TOKEN      (cole o token)
+       cd ..
+       powershell -ExecutionPolicy Bypass -File .\publicar.ps1 -Plano startup
+   • Dólar: já vem da PTAX do Banco Central (boletins até ~13h). Para cotação mais frequente, crie chave
+     gratuita na AwesomeAPI e rode:  cd api; npx wrangler secret put AWESOME_KEY
+   • Tempo real ou redistribuição ampla exigem contrato com a B3 (Política Comercial de Market Data).
+   • NUNCA use o modo desenvolvimento (config.js com API_BASE vazio) em produção: ele chama o endpoint
+     não documentado da B3 diretamente.
+
+2b) LOGIN COM GOOGLE (opcional; já está construído e testado, falta a sua credencial)
+   O app funciona sem conta. Para ligar o "Entrar com Google":
+     a. console.cloud.google.com > criar projeto "Intelinvest".
+     b. Tela de consentimento OAuth (Google Auth Platform): nome Intelinvest, e-mail de suporte, logo
+        (icon-512.png), links da Política de privacidade e dos Termos, público "Externo".
+        Em "Testing" só entram os e-mails que você cadastrar como testadores (até 100).
+        Para abrir ao público, publique a tela ("In production"); escopos básicos (openid, e-mail, perfil)
+        normalmente não exigem verificação, mas o Google pode exigir um DOMÍNIO PRÓPRIO verificado nos links
+        legais. Endereços workers.dev podem ser recusados: por isso o domínio próprio (passo 4) ajuda.
+     c. Credenciais > Criar credenciais > ID do cliente OAuth > Aplicativo da Web.
+        "Origens JavaScript autorizadas": o endereço do site (ex.: https://intelinvest-site.carignatogabriel-426.workers.dev
+        e, depois, o domínio próprio). Não precisa de URI de redirecionamento.
+     d. Copie o ID do cliente (termina em .apps.googleusercontent.com) e rode:
+          powershell -ExecutionPolicy Bypass -File .\publicar.ps1 -GoogleClientId SEU_ID
+        O script cria o banco D1, gera o segredo das sessões (só no Cloudflare) e republica.
+   Dados guardados por usuário: id da conta Google, nome, e-mail, foto, datas. "Excluir minha conta" (em Sobre)
+   apaga tudo. Os textos de Termos/Privacidade já descrevem isso — o advogado deve revisar.
+   Por enquanto o login só identifica a pessoa; ele passa a valer quando houver favoritos, alertas ou assinatura.
+
+2c) DOAÇÕES POR PIX (já construído e testado; falta a sua chave)
+   Botão "Apoiar o projeto" -> tela com valores (R$ 5/10/20/50/outro), QR Code e "copia e cola". O dinheiro cai
+   direto na sua conta, sem intermediário e sem taxa. Tudo é gerado no aparelho da pessoa.
+   Para ligar, rode (uma vez; fica salvo em doacao.json):
+     powershell -ExecutionPolicy Bypass -File .\publicar.ps1 -PixKey "SUA_CHAVE" -PixNome "SEU NOME" -PixCidade "SUA CIDADE"
+   Opcional: -LinkCartao "https://..." (link de cartão: Mercado Pago, Stripe, Apoia.se...) aparece como "Cartão ou outro meio".
+   CUIDADOS
+   • A chave Pix fica visível no código da página. Use uma CHAVE ALEATÓRIA (crie no app do seu banco: Pix > Minhas
+     chaves > Cadastrar > Chave aleatória) em vez do CPF/e-mail/telefone.
+   • Quem controla o site controla para onde vai o dinheiro: ative verificação em duas etapas na conta Cloudflare.
+   • O nome do favorecido é o que o banco do doador mostra antes de confirmar; confirme que bate com o seu.
+   • Google Play: a política de pagamentos pode barrar apps de desenvolvedor comum que pedem doações. O app
+     esconde o botão automaticamente na versão da Play (identificada pelo referenciador android-app://).
+     No site e no PWA instalado pelo navegador o botão aparece normalmente. Confirme com o suporte da Play.
+   • Impostos: doações recebidas por pessoa física podem ter tratamento fiscal (imposto de renda, ITCMD estadual).
+     Converse com um contador; com CNPJ a receita passa a ser da empresa.
+
+3) ASPECTOS LEGAIS (antes de divulgar)
+   • Marca: faça a busca de anterioridade de "Intelinvest" no INPI e deposite a marca (classes de software e
+     serviços financeiros/educacionais). Registre também o domínio e os perfis nas redes.
+   • Preencha os campos [PREENCHER] em termos.html e privacidade.html (nome/CNPJ, e-mail, foro) — procure
+     "PREENCHER" nos dois arquivos.
+   • Consulta com advogado de propriedade intelectual e mercado de capitais (CVM 19/20): revisar Termos,
+     Privacidade e a aba Análise ANTES de cobrar assinatura.
+   • Abrir CNPJ (com contador) para vender e para as contas de loja.
+
+4) DOMÍNIO PRÓPRIO (recomendado)
+   Registre em registro.br (~R$ 40/ano). No painel do Cloudflare: Workers & Pages > intelinvest-site >
+   Settings > Domains & Routes > adicionar domínio. Depois, peça-me para refazer o pacote com o novo endereço.
+
+5) LOJAS
+   • Android (Google Play, taxa única ~US$ 25): em pwabuilder.com cole o link do site, gere o pacote Android
+     (AAB) e envie no Play Console. Use loja/TEXTOS-DA-LOJA.md, as capturas e a imagem de destaque.
+     Informe a URL da política de privacidade (…/privacidade.html).
+   • iPhone: já instala pelo Safari (Compartilhar > Adicionar à Tela de Início). App Store (US$ 99/ano) exige
+     empacotar e passar por revisão mais rígida; deixe para depois.
+
+6) ASSINATURA (só depois de 1–5)
+   Precisa de conta num meio de pagamento (Asaas, Mercado Pago ou Stripe) e CNPJ. Eu construo a parte técnica
+   (login, cobrança, liberar recursos) quando você tiver a conta.
+
+═══ ESCALA (quando passar de ~100 mil acessos por dia) ═══
+• Cloudflare Workers gratuito aceita 100 mil requisições/dia; o plano pago (~US$ 5/mês) aceita 10 milhões.
+• O cache atual é por região da Cloudflare; com muito público espalhado, usar KV para cache global e proteger
+  a cota da brapi (150 mil/mês no Startup).
+• Monitore a cota da brapi e os custos no painel antes de uma campanha grande.
+
+═══ COMANDOS ÚTEIS ═══
+  Testar localmente:        iniciar.bat    (modo desenvolvimento, só para testes)
+  Só montar o pacote:       .\publicar.ps1 -SoBuild -ApiUrl https://seu-servidor.workers.dev
+  Servidor de dados local:  cd api; node dev-server.mjs
